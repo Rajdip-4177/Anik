@@ -43,7 +43,7 @@ export function HeartfeltMessageSection() {
         <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-primary">A Message From My Heart</h2>
       </ScrollFadeIn>
       <ScrollFadeIn delay="delay-100">
-        <Card className="max-w-2xl mx-auto shadow-xl bg-card/80 border-border">
+        <Card className="w-full max-w-2xl mx-auto shadow-xl bg-card/80 border-border">
           <CardHeader>
             <CardTitle className="text-xl sm:text-2xl md:text-3xl text-center text-primary-foreground bg-primary p-3 rounded-md">
               To My Dearest Anik
@@ -57,9 +57,12 @@ export function HeartfeltMessageSection() {
             </p>
             
             {!aiMessage && !isLoading && (
-              <Button onClick={handleGenerateMessage} size="lg" className="mt-4">
-                <Wand2 className="mr-2 h-5 w-5" />
-                Want to read something more from me? Click here!
+              <Button 
+                onClick={handleGenerateMessage} 
+                className="mt-4 w-full sm:w-auto px-4 py-3 sm:px-8 sm:py-3 text-base sm:text-lg h-auto sm:h-11 whitespace-normal sm:whitespace-nowrap"
+              >
+                <Wand2 className="mr-2 h-5 w-5 flex-shrink-0" />
+                <span className="text-center">Want to read something more from me? Click here!</span>
               </Button>
             )}
             
