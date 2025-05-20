@@ -114,7 +114,7 @@ export function MusicPlayer() {
     <>
       <audio 
         ref={audioRef} 
-        src="/audio/Khaamoshi mein bhi tera awaaz sunta hoon.mp3" // Ensure this path is correct and file exists in public/audio/
+        src="/audio/Khaamoshi mein bhi tera awaaz sunta hoon.mp3" 
         loop 
         preload="auto"
         onError={handleAudioElementSourceError} // Catch errors related to loading/decoding the audio source
@@ -126,7 +126,7 @@ export function MusicPlayer() {
           onClick={togglePlayPause}
           className="rounded-full w-12 h-12 bg-card/80 hover:bg-card border-primary/50 hover:border-primary text-primary shadow-lg"
           aria-label={isPlaying ? "Pause music" : "Play music"}
-          title={isPlaying ? "Pause music" : "Play music"} // Added title for better UX
+          title={isPlaying ? "Pause music" : "Play music"} 
         >
           {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
           <Music2 className="w-5 h-5 absolute opacity-20 group-hover:opacity-40 transition-opacity" style={{pointerEvents: 'none'}} />
