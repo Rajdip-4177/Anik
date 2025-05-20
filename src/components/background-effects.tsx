@@ -1,9 +1,10 @@
+
 "use client";
 
 import { useEffect, useState } from 'react';
 import { cn } from '@/lib/utils';
 
-const NUM_CONFETTI = 60; // Slightly increased for a fuller effect
+const NUM_CONFETTI = 60; 
 const NUM_SPARKLES = 35;
 
 interface EffectItem {
@@ -15,23 +16,29 @@ interface EffectItem {
 export function BackgroundEffects() {
   const [effects, setEffects] = useState<EffectItem[]>([]);
   const [confettiColors, setConfettiColors] = useState<string[]>([]);
+  const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
-    // Get CSS variables for colors after component mounts (client-side)
+    setHasHydrated(true); // Component has mounted on the client
+  }, []);
+
+  useEffect(() => {
+    if (!hasHydrated) return; // Only run after client-side hydration
+
     const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
     const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
     
     setConfettiColors([
       `hsl(${primaryColor})`,
       `hsl(${accentColor})`,
-      'hsl(45, 90%, 70%)', // Warm Gold
-      'hsl(330, 80%, 85%)', // Soft Pink/Magenta
-      'hsl(25, 90%, 75%)' // Soft Orange
+      'hsl(45, 90%, 70%)', 
+      'hsl(330, 80%, 85%)', 
+      'hsl(25, 90%, 75%)' 
     ]);
-  }, []);
+  }, [hasHydrated]);
 
   useEffect(() => {
-    if (confettiColors.length === 0) return; // Don't generate effects until colors are ready
+    if (!hasHydrated || confettiColors.length === 0) return; // Wait for hydration and colors
 
     const generatedEffects: EffectItem[] = [];
 
@@ -42,19 +49,19 @@ export function BackgroundEffects() {
         type: 'confetti',
         style: {
           left: `${Math.random() * 100}vw`,
-          animationDuration: `${Math.random() * 4 + 5}s`, // 5s to 9s for a slower, gentler fall
+          animationDuration: `${Math.random() * 4 + 5}s`, 
           animationDelay: `${Math.random() * 6}s`,
-          width: `${Math.random() * 6 + 4}px`, // 4px to 10px
-          height: `${Math.random() * 12 + 6}px`, // 6px to 18px
+          width: `${Math.random() * 6 + 4}px`, 
+          height: `${Math.random() * 12 + 6}px`, 
           backgroundColor: confettiColors[Math.floor(Math.random() * confettiColors.length)],
           transform: `rotate(${Math.random() * 360}deg)`,
-          opacity: (Math.random() * 0.3 + 0.6).toString(), // 0.6 to 0.9 opacity
+          opacity: (Math.random() * 0.3 + 0.6).toString(), 
         },
       });
     }
 
     // Generate Sparkles
-    const primarySparkleColor = confettiColors[0]; // Use the primary color for sparkles
+    const primarySparkleColor = confettiColors[0]; 
     for (let i = NUM_CONFETTI; i < NUM_CONFETTI + NUM_SPARKLES; i++) {
       generatedEffects.push({
         id: i,
@@ -62,16 +69,20 @@ export function BackgroundEffects() {
         style: {
           left: `${Math.random() * 100}vw`,
           top: `${Math.random() * 100}vh`,
-          width: `${Math.random() * 2.5 + 1}px`, // 1px to 3.5px, slightly finer
+          width: `${Math.random() * 2.5 + 1}px`, 
           height: `${Math.random() * 2.5 + 1}px`,
           animationDelay: `${Math.random() * 2.5}s`,
-          backgroundColor: primarySparkleColor, // Use primary color from themed palette
-          opacity: (Math.random() * 0.4 + 0.4).toString(), // 0.4 to 0.8 opacity
+          backgroundColor: primarySparkleColor, 
+          opacity: (Math.random() * 0.4 + 0.4).toString(), 
         },
       });
     }
     setEffects(generatedEffects);
-  }, [confettiColors]); // Re-run when confettiColors are set
+  }, [hasHydrated, confettiColors]); 
+
+  if (!hasHydrated) {
+    return null; // Render nothing on the server or before client-side hydration is complete
+  }
 
   return (
     <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
