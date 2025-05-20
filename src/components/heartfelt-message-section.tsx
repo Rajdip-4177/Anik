@@ -1,3 +1,4 @@
+
 "use client";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -39,17 +40,17 @@ export function HeartfeltMessageSection() {
   return (
     <section className="py-16 px-4 md:px-8 bg-background/70 backdrop-blur-sm">
       <ScrollFadeIn>
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-6 text-primary">A Message From My Heart</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 text-primary">A Message From My Heart</h2>
       </ScrollFadeIn>
       <ScrollFadeIn delay="delay-100">
         <Card className="max-w-2xl mx-auto shadow-xl bg-card/80 border-border">
           <CardHeader>
-            <CardTitle className="text-2xl md:text-3xl text-center text-primary-foreground bg-primary p-3 rounded-md">
+            <CardTitle className="text-xl sm:text-2xl md:text-3xl text-center text-primary-foreground bg-primary p-3 rounded-md">
               To My Dearest Anik
             </CardTitle>
           </CardHeader>
-          <CardContent className="text-lg text-center space-y-6">
-            <p className="text-foreground/90">
+          <CardContent className="text-center space-y-6">
+            <p className="text-base sm:text-lg text-foreground/90">
               "This may be our last birthday together before Class 11 might set us on different paths... 
               but nothing, absolutely nothing, can ever break the bond we've built. 
               The memories we've made are etched in my heart forever."
@@ -72,8 +73,8 @@ export function HeartfeltMessageSection() {
             {aiMessage && (
               <ScrollFadeIn>
                 <div className="mt-6 p-6 border border-primary rounded-lg bg-accent/30 shadow-inner">
-                  <h3 className="text-xl font-semibold mb-3 text-primary font-heading">A Little Extra...</h3>
-                  <p className="text-foreground whitespace-pre-line text-left">{aiMessage}</p>
+                  <h3 className="text-lg sm:text-xl font-semibold mb-3 text-primary font-heading">A Little Extra...</h3>
+                  <p className="text-foreground whitespace-pre-line text-left text-base sm:text-lg">{aiMessage}</p>
                 </div>
               </ScrollFadeIn>
             )}

@@ -1,3 +1,4 @@
+
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollFadeIn } from "@/components/scroll-fade-in";
@@ -50,7 +51,7 @@ export function JourneyTimeline() {
   return (
     <section className="py-16 px-4 md:px-8 bg-background/70 backdrop-blur-sm">
       <ScrollFadeIn>
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary">Our Journey</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-primary">Our Journey</h2>
       </ScrollFadeIn>
       <div className="max-w-3xl mx-auto space-y-8">
         {journeyMemories.map((memory, index) => (
@@ -59,13 +60,13 @@ export function JourneyTimeline() {
               <CardHeader className="flex flex-row items-center gap-4 p-6 bg-muted/50">
                 <memory.icon className={`w-10 h-10 ${memory.color} hidden sm:block`} />
                 <div>
-                  <CardTitle className="text-2xl md:text-3xl text-primary-foreground bg-primary px-3 py-1 rounded-md inline-block mb-1">
+                  <CardTitle className="text-xl sm:text-2xl md:text-3xl text-primary-foreground bg-primary px-3 py-1 rounded-md inline-block mb-1">
                     {memory.class}
                   </CardTitle>
                   <h3 className="text-xl font-semibold text-foreground">{memory.title} <span className="ml-2 sm:hidden">{memory.emoji}</span></h3>
                 </div>
               </CardHeader>
-              <CardContent className="p-6 text-lg text-foreground/90">
+              <CardContent className="p-6 text-base sm:text-lg text-foreground/90">
                 <p>{memory.description}</p>
               </CardContent>
             </Card>

@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -51,8 +52,8 @@ export function CelebrationFinale() {
   return (
     <section className="py-20 px-4 md:px-8 text-center relative min-h-[70vh] flex flex-col items-center justify-center bg-gradient-to-b from-accent/30 to-background/70 backdrop-blur-sm overflow-hidden">
       <ScrollFadeIn className="w-full">
-        <h2 className="text-4xl md:text-5xl font-bold mb-8 text-primary">Here's to You, Anik!</h2>
-        <p className="text-xl text-foreground/80 mb-10 max-w-xl mx-auto">
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-8 text-primary">Here's to You, Anik!</h2>
+        <p className="text-lg sm:text-xl text-foreground/80 mb-10 max-w-xl mx-auto">
           May your day be as bright as your smile, and your future even brighter.
         </p>
         
@@ -80,10 +81,10 @@ export function CelebrationFinale() {
       <AlertDialog open={isPopupOpen} onOpenChange={setIsPopupOpen}>
         <AlertDialogContent className="bg-card border-primary shadow-2xl">
           <AlertDialogHeader>
-            <AlertDialogTitle className="text-3xl text-primary font-heading text-center">
+            <AlertDialogTitle className="text-2xl sm:text-3xl text-primary font-heading text-center">
               Forever Brothers! 🎉
             </AlertDialogTitle>
-            <AlertDialogDescription className="text-lg text-foreground/90 text-center py-4">
+            <AlertDialogDescription className="text-base sm:text-lg text-foreground/90 text-center py-4">
               No matter where life takes us, no matter how far apart we may be,
               the bond we forged, the memories we made, and the brotherhood we share
               will always tie us together. Happy Birthday, Anik!

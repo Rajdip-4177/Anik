@@ -1,3 +1,4 @@
+
 "use client";
 import { ScrollFadeIn } from "@/components/scroll-fade-in";
 import { Heart, Users } from "lucide-react";
@@ -29,14 +30,14 @@ export function QuoteShowcase() {
   return (
     <section className="py-16 px-4 md:px-8 bg-accent/30 backdrop-blur-sm">
       <ScrollFadeIn>
-        <h2 className="text-4xl md:text-5xl font-bold text-center mb-12 text-primary">Words That Echo Our Bond</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-12 text-primary">Words That Echo Our Bond</h2>
       </ScrollFadeIn>
       <div className="max-w-3xl mx-auto space-y-10">
         {quotes.map((quote, index) => (
           <ScrollFadeIn key={index} delay={`delay-${index * 100}`}>
             <blockquote className="text-center p-6 border-l-4 border-primary bg-card/80 shadow-lg rounded-r-lg">
               <quote.icon className="w-8 h-8 text-primary mx-auto mb-4" />
-              <p className="text-xl md:text-2xl italic text-foreground mb-3">"{quote.text}"</p>
+              <p className="text-lg sm:text-xl md:text-2xl italic text-foreground mb-3">"{quote.text}"</p>
               <footer className="text-md text-muted-foreground">- {quote.author}</footer>
             </blockquote>
           </ScrollFadeIn>
