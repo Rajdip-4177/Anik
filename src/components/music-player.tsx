@@ -114,7 +114,7 @@ export function MusicPlayer() {
     <>
       <audio 
         ref={audioRef} 
-        src="/audio/happy-birthday.mp3" // Ensure this path is correct and file exists in public/audio/
+        src="/audio/Khaamoshi mein bhi tera awaaz sunta hoon.mp3" // Ensure this path is correct and file exists in public/audio/
         loop 
         preload="auto"
         onError={handleAudioElementSourceError} // Catch errors related to loading/decoding the audio source
