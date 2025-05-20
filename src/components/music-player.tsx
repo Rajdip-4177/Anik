@@ -22,9 +22,10 @@ export function MusicPlayer() {
       audioRef.current.pause();
     } else {
       audioRef.current.play().catch(error => {
-        console.warn("Audio play failed (user interaction might be needed, or an error occurred):", error);
+        console.warn("Audio play failed on toggle. User interaction might be needed, or an error occurred:", error);
       });
     }
+    // The actual isPlaying state will be updated by the 'play' and 'pause' event listeners.
   };
 
   useEffect(() => {
@@ -35,25 +36,42 @@ export function MusicPlayer() {
       const handlePlay = () => setIsPlaying(true);
       const handlePause = () => setIsPlaying(false);
 
+      // Function to attempt playing the audio
+      const tryAutoplay = () => {
+        // Only try to play if it's still paused.
+        // This check is important because the 'canplaythrough' event might fire
+        // after the user has already manually started/paused the audio.
+        if (audioElement.paused) {
+          audioElement.play().catch(error => {
+            console.warn("Programmatic autoplay attempt failed. This is often due to browser autoplay policies. User interaction (e.g., clicking play) might be required.", error);
+          });
+        }
+      };
+
       audioElement.addEventListener('play', handlePlay);
       audioElement.addEventListener('pause', handlePause);
+
+      // Check if the audio is ready to play.
+      // readyState HAVE_ENOUGH_DATA (4) means enough data is available to start playing.
+      if (audioElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+        tryAutoplay();
+      } else {
+        // If not ready, wait for the 'canplaythrough' event.
+        audioElement.addEventListener('canplaythrough', tryAutoplay, { once: true });
+      }
       
-      // Sync isPlaying state with the audio element's current state
-      // and attempt autoplay if specified and initially paused.
+      // Initial state sync: If audio is already playing (e.g. from a previous successful autoplay or state restoration)
+      // or if it's paused.
       if (!audioElement.paused) {
         setIsPlaying(true);
       } else {
-        setIsPlaying(false); // Ensure state is false if paused
-        if (audioElement.autoplay) { // If autoplay is true and it's paused, attempt to play
-           audioElement.play().catch(err => {
-              console.warn("Autoplay attempt in useEffect failed:", err);
-           });
-        }
+        setIsPlaying(false);
       }
 
       return () => {
         audioElement.removeEventListener('play', handlePlay);
         audioElement.removeEventListener('pause', handlePause);
+        audioElement.removeEventListener('canplaythrough', tryAutoplay);
       };
     }
   }, [hasHydrated]); // Effect depends on hasHydrated
@@ -68,8 +86,8 @@ export function MusicPlayer() {
         ref={audioRef} 
         src="/audio/happy-birthday.mp3" // Ensure this path matches your file in public/audio/
         loop 
-        autoPlay 
         preload="auto" 
+        // autoPlay attribute removed in favor of programmatic attempt in useEffect
       />
       <div className="fixed bottom-4 left-4 z-50">
         <Button
