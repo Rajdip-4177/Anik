@@ -4,33 +4,33 @@
 
 @layer base {
   :root {
-    --background: 25 57% 94%; /* Light Peach */
-    --foreground: 20 14.3% 15%; /* Darker brown for general text */
+    --background: 30 100% 98%; /* Softer, lighter peach/cream */
+    --foreground: 25 25% 25%; /* Warm dark brown, slightly softer */
 
-    --card: 25 57% 92%; /* Slightly darker peach for cards */
-    --card-foreground: 20 14.3% 15%;
+    --card: 0 0% 100%; /* White for cards for better contrast */
+    --card-foreground: 25 25% 20%; /* Darker for readability on cards */
 
-    --popover: 25 57% 92%;
-    --popover-foreground: 20 14.3% 15%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 25 25% 20%;
 
-    --primary: 16 100% 66%; /* Warm Coral */
-    --primary-foreground: 0 0% 100%; /* White text on Coral */
+    --primary: 350 90% 65%; /* Rose/deep peach */
+    --primary-foreground: 0 0% 100%; /* White text on primary */
 
-    --secondary: 240 60% 90%; /* A slightly desaturated lavender for secondary elements */
-    --secondary-foreground: 20 14.3% 15%;
+    --secondary: 250 60% 92%; /* Softened lavender for secondary elements */
+    --secondary-foreground: 250 30% 30%; /* Darker for text on secondary */
 
-    --muted: 25 50% 90%; /* Muted peach */
+    --muted: 30 80% 94%; /* Muted version of background peach */
     --muted-foreground: 25 30% 50%; /* Muted text on peach */
 
-    --accent: 240 67% 94%; /* Soft Lavender */
-    --accent-foreground: 240 30% 25%; /* Dark purple text on Lavender */
+    --accent: 270 70% 80%; /* Vibrant lavender/violet */
+    --accent-foreground: 270 50% 25%; /* Dark purple text on accent */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 25 50% 85%; /* Peach-toned border */
-    --input: 25 50% 88%; /* Peach-toned input */
-    --ring: 16 100% 66%; /* Warm Coral for ring */
+    --border: 30 50% 90%; /* Peach-toned border, lighter */
+    --input: 30 50% 92%; /* Peach-toned input, lighter */
+    --ring: 350 90% 65%; /* Primary color for ring */
 
     --radius: 0.75rem; /* More rounded for a softer feel */
 
@@ -52,25 +52,34 @@
   }
 
   .dark {
-    --background: 20 10% 10%; /* Dark warm gray */
-    --foreground: 25 57% 94%; /* Light Peach text */
-    --card: 20 10% 15%;
-    --card-foreground: 25 57% 94%;
-    --popover: 20 10% 15%;
-    --popover-foreground: 25 57% 94%;
-    --primary: 16 100% 66%; /* Warm Coral (can remain bright) */
-    --primary-foreground: 20 10% 10%;
-    --secondary: 240 20% 25%; /* Dark lavender */
-    --secondary-foreground: 240 67% 94%;
-    --muted: 20 10% 20%;
-    --muted-foreground: 20 10% 60%;
-    --accent: 240 30% 30%; /* Darker soft Lavender */
-    --accent-foreground: 240 67% 94%;
-    --destructive: 0 62.8% 30.6%;
+    --background: 20 12% 12%; /* Dark warm gray, slightly darker */
+    --foreground: 30 100% 95%; /* Off-white peach for text */
+    
+    --card: 20 10% 18%; /* Darker card */
+    --card-foreground: 30 100% 95%;
+    
+    --popover: 20 10% 18%;
+    --popover-foreground: 30 100% 95%;
+    
+    --primary: 350 80% 70%; /* Primary for dark, bit lighter */
+    --primary-foreground: 20 10% 10%; /* Dark text on primary for dark mode */
+    
+    --secondary: 250 30% 30%; /* Dark lavender */
+    --secondary-foreground: 250 70% 90%;
+    
+    --muted: 20 10% 22%;
+    --muted-foreground: 20 10% 65%;
+    
+    --accent: 270 60% 70%; /* Accent for dark, bit lighter */
+    --accent-foreground: 270 80% 95%;
+    
+    --destructive: 0 70% 45%;
     --destructive-foreground: 0 0% 98%;
-    --border: 20 10% 25%;
-    --input: 20 10% 25%;
-    --ring: 16 100% 70%;
+    
+    --border: 20 10% 30%;
+    --input: 20 10% 30%;
+    --ring: 350 80% 70%; /* Primary color for ring in dark mode */
+    
     --chart-1: 220 70% 50%;
     --chart-2: 160 60% 45%;
     --chart-3: 30 80% 55%;

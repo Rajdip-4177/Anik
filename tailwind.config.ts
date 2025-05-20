@@ -65,9 +65,9 @@ export default {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			},
-        'peach-gradient-start': '#FAF0E6', // Light Peach
-        'lavender-gradient-mid': '#F0E8FF', // Lighter Lavender
-        'sunset-gradient-end': '#FFDAB9', // Lighter Sunset Orange
+        'peach-gradient-start': 'hsl(30 100% 98%)', // Updated to match --background
+        'lavender-gradient-mid': 'hsl(260 80% 95%)', // Updated soft lavender
+        'sunset-gradient-end': 'hsl(350 90% 90%)' // Updated soft rose/peach
   		},
   		borderRadius: {
   			lg: 'var(--radius)',
