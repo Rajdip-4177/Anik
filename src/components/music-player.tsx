@@ -12,82 +12,112 @@ export function MusicPlayer() {
   const [hasHydrated, setHasHydrated] = useState(false);
 
   useEffect(() => {
-    setHasHydrated(true); // Component has mounted on the client
+    setHasHydrated(true);
   }, []);
 
   const togglePlayPause = () => {
-    if (!hasHydrated || !audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play().catch(error => {
-        console.warn("Audio play failed on toggle. User interaction might be needed, or an error occurred:", error);
-      });
+    if (!hasHydrated || !audioRef.current) {
+      console.warn("MusicPlayer: Attempted to toggle play/pause before component hydrated or audio element is ready.");
+      return;
     }
-    // The actual isPlaying state will be updated by the 'play' and 'pause' event listeners.
+
+    const audioElement = audioRef.current;
+    if (audioElement.paused) {
+      audioElement.play().catch(error => {
+        console.error("MusicPlayer: Error encountered while trying to play audio:", error);
+        // isPlaying state will be updated by 'error' or remain false if 'play' event doesn't fire
+      });
+    } else {
+      audioElement.pause();
+    }
+    // The isPlaying state is primarily managed by the 'play', 'pause', and 'error' event listeners
   };
 
   useEffect(() => {
-    if (!hasHydrated) return; // Wait for hydration
+    if (!hasHydrated || !audioRef.current) {
+      return;
+    }
 
     const audioElement = audioRef.current;
-    if (audioElement) {
-      const handlePlay = () => setIsPlaying(true);
-      const handlePause = () => setIsPlaying(false);
 
-      // Function to attempt playing the audio
-      const tryAutoplay = () => {
-        // Only try to play if it's still paused.
-        // This check is important because the 'canplaythrough' event might fire
-        // after the user has already manually started/paused the audio.
-        if (audioElement.paused) {
-          audioElement.play().catch(error => {
-            console.warn("Programmatic autoplay attempt failed. This is often due to browser autoplay policies. User interaction (e.g., clicking play) might be required.", error);
-          });
-        }
-      };
-
-      audioElement.addEventListener('play', handlePlay);
-      audioElement.addEventListener('pause', handlePause);
-
-      // Check if the audio is ready to play.
-      // readyState HAVE_ENOUGH_DATA (4) means enough data is available to start playing.
-      if (audioElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
-        tryAutoplay();
-      } else {
-        // If not ready, wait for the 'canplaythrough' event.
-        audioElement.addEventListener('canplaythrough', tryAutoplay, { once: true });
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+    const handleAudioError = (event: Event) => {
+      console.error("MusicPlayer: Audio element reported an error during operation:", event);
+      setIsPlaying(false); // Ensure UI reflects that audio is not playing
+    };
+    const handleCanPlayThrough = () => {
+      // Attempt to autoplay only if it's still paused and intended
+      // This check avoids re-playing if user paused it before canplaythrough
+      if (audioElement.paused) {
+        // Autoplay attempt. Modern browsers are very restrictive.
+        // This might log a warning/error if blocked, which is expected.
+        audioElement.play().catch(error => {
+          console.info("MusicPlayer: Programmatic autoplay attempt failed or was interrupted (this is common). User interaction will be required.", error.name, error.message);
+        });
       }
-      
-      // Initial state sync: If audio is already playing (e.g. from a previous successful autoplay or state restoration)
-      // or if it's paused.
-      if (!audioElement.paused) {
-        setIsPlaying(true);
-      } else {
-        setIsPlaying(false);
-      }
+    };
 
-      return () => {
-        audioElement.removeEventListener('play', handlePlay);
-        audioElement.removeEventListener('pause', handlePause);
-        audioElement.removeEventListener('canplaythrough', tryAutoplay);
-      };
+    audioElement.addEventListener('play', handlePlay);
+    audioElement.addEventListener('pause', handlePause);
+    audioElement.addEventListener('error', handleAudioError); // Important for runtime errors
+    
+    // Check if audio is ready enough to attempt play, otherwise wait for 'canplaythrough'
+    if (audioElement.readyState >= HTMLMediaElement.HAVE_ENOUGH_DATA) {
+      handleCanPlayThrough();
+    } else {
+      audioElement.addEventListener('canplaythrough', handleCanPlayThrough, { once: true });
     }
-  }, [hasHydrated]); // Effect depends on hasHydrated
+
+    // Initial sync of isPlaying state
+    setIsPlaying(!audioElement.paused);
+
+    return () => {
+      audioElement.removeEventListener('play', handlePlay);
+      audioElement.removeEventListener('pause', handlePause);
+      audioElement.removeEventListener('error', handleAudioError);
+      audioElement.removeEventListener('canplaythrough', handleCanPlayThrough);
+    };
+  }, [hasHydrated]); // Re-run when hasHydrated changes
 
   if (!hasHydrated) {
     return null; // Don't render UI on server or before hydration
   }
 
+  // This handler is specifically for the <audio> element's onError prop
+  const handleAudioElementSourceError = (e: React.SyntheticEvent<HTMLAudioElement, Event>) => {
+    const error = e.currentTarget.error;
+    console.error("MusicPlayer: HTMLAudioElement onError (source loading/decoding issue):", error);
+    if (error) {
+        switch (error.code) {
+            case MediaError.MEDIA_ERR_ABORTED:
+                console.error('Fetching process aborted by user.');
+                break;
+            case MediaError.MEDIA_ERR_NETWORK:
+                console.error('A network error caused the audio download to fail.');
+                break;
+            case MediaError.MEDIA_ERR_DECODE:
+                console.error('Audio decoding error. The file might be corrupted or in an unsupported format.');
+                break;
+            case MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED:
+                console.error('The audio source is not supported or the file could not be found at the specified path.');
+                break;
+            default:
+                console.error('An unknown error occurred with the audio element.');
+                break;
+        }
+    }
+    setIsPlaying(false); // Reflect error in UI state
+  };
+
   return (
     <>
       <audio 
         ref={audioRef} 
-        src="/audio/happy-birthday.mp3" // Ensure this path matches your file in public/audio/
+        src="/audio/happy-birthday.mp3" // Ensure this path is correct and file exists in public/audio/
         loop 
-        preload="auto" 
-        // autoPlay attribute removed in favor of programmatic attempt in useEffect
+        preload="auto"
+        onError={handleAudioElementSourceError} // Catch errors related to loading/decoding the audio source
       />
       <div className="fixed bottom-4 left-4 z-50">
         <Button
@@ -96,6 +126,7 @@ export function MusicPlayer() {
           onClick={togglePlayPause}
           className="rounded-full w-12 h-12 bg-card/80 hover:bg-card border-primary/50 hover:border-primary text-primary shadow-lg"
           aria-label={isPlaying ? "Pause music" : "Play music"}
+          title={isPlaying ? "Pause music" : "Play music"} // Added title for better UX
         >
           {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6" />}
           <Music2 className="w-5 h-5 absolute opacity-20 group-hover:opacity-40 transition-opacity" style={{pointerEvents: 'none'}} />
