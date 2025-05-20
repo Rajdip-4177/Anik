@@ -11,8 +11,8 @@ export default {
   theme: {
   	extend: {
       fontFamily: {
-        sans: ['var(--font-roboto)', ...defaultTheme.fontFamily.sans],
-        heading: ['var(--font-pacifico)', 'cursive'],
+        sans: ['var(--font-poppins)', ...defaultTheme.fontFamily.sans],
+        heading: ['var(--font-dancing-script)', 'cursive'],
       },
   		colors: {
   			background: 'hsl(var(--background))',
